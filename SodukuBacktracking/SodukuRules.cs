@@ -12,21 +12,20 @@ namespace SodukuBacktracking
         public static bool IsRowValid(int[,] grid, int row)
         {
             var nonZero = grid.GetRow(row).Where(num => num != 0);
-            return nonZero.Distinct().Count() == nonZero.Count();
+            return HasDuplicates(nonZero);
         }
 
         public static bool IsColomnValid(int[,] grid, int colomn)
         {
             var nonZero = grid.GetColomn(colomn).Where(num => num != 0);
-            return nonZero.Distinct().Count() == nonZero.Count();
+            return HasDuplicates(nonZero);
         }
 
         public static bool Is3X3GridValid(int[,] grid, int row, int colomn)
         {
             var subgrid = GetSubGrid(grid, row, colomn);
-            Console.WriteLine(string.Join( ",", subgrid));
             var nonZero = subgrid.Where(num => num != 0);
-            return nonZero.Distinct().Count() == nonZero.Count();
+            return HasDuplicates(nonZero);
         }
 
         private static int[] GetSubGrid(int[,] grid, int row, int colomn)
@@ -35,12 +34,13 @@ namespace SodukuBacktracking
             var gridPosition = GetGridCornerPosition(row, colomn);
             var x = gridPosition.Item1;
             var y = gridPosition.Item2;
-            Console.WriteLine($"({x} , {y})");
             for (int i = x; i < x + 3; i++)
                 for (int j = y; j < y + 3; j++)
                     collector.Add(grid[i, j]);
             return collector.ToArray();
         }
+
+        private static bool HasDuplicates(IEnumerable<int> numbers) => numbers.Distinct().Count() == numbers.Count();
 
         private static (int,int) GetGridCornerPosition(int row, int colomn)
         {
