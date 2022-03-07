@@ -8,17 +8,17 @@ namespace SodukuBacktracking
 {
     public class BackTracking
     {
-        private readonly int[,] Grid;
-        private readonly List<Tuple<int, int, int>> nodes;
-       
-        public BackTracking(int[,] grid)
+        public int[,] Solve(int[,] grid)
         {
-            Grid = grid;
-            nodes = new List<Tuple<int,int,int>>();
+            var nodes = new List<(int, int, int)>();
+            return GetSolution(grid, nodes, 0, 0);
         }
 
-        public int[,] GetSolution(int[,] grid, List<(int, int, int)> nodes, int row, int colomn, bool backTrack)
+        private int[,] GetSolution(int[,] grid, List<(int, int, int)> nodes, int row, int colomn)
         {
+            if (SodukuRules.IsSodukuSolved(grid))
+                return grid;
+
             if (grid[row, colomn] == 0)
             {
                 // increment till a valid number and go forward 
@@ -26,14 +26,15 @@ namespace SodukuBacktracking
                 int newValue = GetValidNumber(grid, row, colomn,0);
                 if (newValue != -1)
                 {
+                    grid[row, colomn] = newValue;
                     (int, int, int) node = (row, colomn, newValue);
                     nodes.Add(node);
                     var nextNode = GetNextNode(row, colomn);
-                    return GetSolution(grid, nodes, nextNode.Item1, nextNode.Item2, false);
+                    return GetSolution(grid, nodes, nextNode.Item1, nextNode.Item2);
                 }
                 else {
                     var lastNode = nodes.LastOrDefault();
-                    return GetSolution(grid, nodes, lastNode.Item1, lastNode.Item2, true);
+                    return GetSolution(grid, nodes, lastNode.Item1, lastNode.Item2);
                 }
             }
             else if (grid[row, colomn] != 0 && HasBeenExplored(nodes, row, colomn))
@@ -44,56 +45,54 @@ namespace SodukuBacktracking
                 int newValue = GetValidNumber(grid, row, colomn, currentNode.Item3);
                 if (newValue != -1)
                 {
+                    grid[row, colomn] = newValue;
+                    nodes.Remove(currentNode);
                     (int, int, int) node = (row, colomn, newValue);
                     nodes.Add(node);
                     var nextNode = GetNextNode(row, colomn);
-                    return GetSolution(grid, nodes, nextNode.Item1, nextNode.Item2, false);
+                    return GetSolution(grid, nodes, nextNode.Item1, nextNode.Item2);
                 }
                 else 
                 {
                     grid[row, colomn] = 0;
-                    nodes.RemoveAt(nodes.Count - 1);
+                    nodes.Remove(nodes.LastOrDefault());
                     var lastNode = nodes.LastOrDefault();
-                    return GetSolution(grid, nodes, lastNode.Item1, lastNode.Item2, true);
+                    return GetSolution(grid, nodes, lastNode.Item1, lastNode.Item2);
                 }
             }
             else if (grid[row, colomn] != 0 && !HasBeenExplored(nodes, row, colomn))
             {
-                // skip this node to the previous one
                 var nextNode = GetNextNode(row, colomn);
-                return GetSolution(grid, nodes, nextNode.Item1, nextNode.Item2, false);
+                return GetSolution(grid, nodes, nextNode.Item1, nextNode.Item2);
             }
-            else 
+            else if(row == 8 && colomn == 8)
             {
-                // skip for the next node
                 return grid;
             }
+            else
+                return grid;
         }
         private int GetValidNumber(int[,] grid, int row, int colomn, int currentValue = 0)
         {
-            if (currentValue == 0) return GetValidNumber(grid, row, colomn, currentValue++);
+            if (currentValue == 0) 
+                return GetValidNumber(grid, row, colomn, ++currentValue);
             else if (currentValue > 9) return -1;
 
-            if (IsValidEntry(grid, row, colomn, currentValue)) return currentValue;
-            else return GetValidNumber(grid, row, currentValue);
+            if (SodukuRules.IsValidEntry(grid, row, colomn, currentValue)) return currentValue;
+            else return GetValidNumber(grid, row, colomn, ++currentValue);
         }
 
-        private (int, int) GetNextNode(int currentRow, int currentColomn)
+        private static (int, int) GetNextNode(int currentRow, int currentColomn)
         {
             if (currentColomn < 8)
-                return (currentRow, currentColomn++);
+                return (currentRow, ++currentColomn);
             else if(currentColomn == 8 && currentRow < 8)
-                return (currentRow++, 0);
+                return (++currentRow, 0);
             else 
                 return (0, 0);
         }
 
-        private bool IsValidEntry(int[,] grid, int row, int colomn, int currentValue)
-        {
-            throw new NotImplementedException();
-        }
-
-        private bool HasBeenExplored(List<(int, int, int)> nodes, int row, int colomn)
+        private static bool HasBeenExplored(List<(int, int, int)> nodes, int row, int colomn)
         {
             return nodes.Any(node => node.Item1 == row && node.Item2 == colomn);
         }
