@@ -27,7 +27,7 @@ namespace SodukuBacktracking
 
         public static bool IsSodukuSolved(int[,] grid)
         {
-            var rowColCheck = Enumerable.Range(0, 9).All(n => IsRowValid(grid, n) && IsColomnValid(grid, n));
+            var rowColCheck = Enumerable.Range(0, 9).All(n => !HasZeros(grid, n) && IsRowValid(grid, n) && IsColomnValid(grid, n));
             var subGridCheck = true;
             for (int i = 0; i < 3; i++)
             {
@@ -60,6 +60,11 @@ namespace SodukuBacktracking
             var subgrid = GetSubGrid(grid, row, colomn);
             var nonZero = subgrid.Where(num => num != 0);
             return HasDuplicates(nonZero);
+        }
+
+        private static bool HasZeros(int[,] grid,int row)
+        {
+            return grid.GetRow(row).Any(num => num == 0);
         }
 
         private static bool HasDuplicates(IEnumerable<int> numbers) => numbers.Distinct().Count() == numbers.Count();
