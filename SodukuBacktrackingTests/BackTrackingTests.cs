@@ -15,7 +15,7 @@ namespace SodukuBacktrackingTests
         public void ShouldSolveSodukuWhenGridSolvable()
         {
             var problem = GetSolvableSoduku();
-            var backTracking = new BackTracking(problem);
+            var backTracking = new BackTracking();
 
             var results = backTracking.Solve(problem);
             var isSolved = SodukuRules.IsSodukuSolved(results);
@@ -25,7 +25,7 @@ namespace SodukuBacktrackingTests
 
         private static int[,] GetSolvableSoduku()
         {
-            int[,] grid =  { { 3, 0, 6, 5, 0, 8, 4, 0, 0}, 
+            int[,] grid =   {{ 3, 0, 6, 5, 0, 8, 4, 0, 0}, 
                              { 5, 2, 0, 0, 0, 0, 0, 0, 0}, 
                              { 0, 8, 7, 0, 0, 0, 0, 3, 1}, 
                              { 0, 0, 3, 0, 1, 0, 0, 8, 0}, 
