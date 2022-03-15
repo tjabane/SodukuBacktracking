@@ -90,5 +90,22 @@ namespace SodukuBacktracking
 
         private static int GetIndexPosition(int index) => (int) Math.Floor(index / 3.0);
 
+        public static bool GridValid(int[,] grid)
+        {
+            var rowColCheck = Enumerable.Range(0, 9).All(n => IsRowValid(grid, n) && IsColomnValid(grid, n));
+            var subGridCheck = true;
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (!Is3X3GridValid(grid, i * 3, j * 3))
+                    {
+                        subGridCheck = false;
+                        break;
+                    }
+                }
+            }
+            return !(rowColCheck && subGridCheck);
+        }
     }
 }
