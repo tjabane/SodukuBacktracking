@@ -12,3 +12,5 @@ The algorithm works fine.
 ![coming soon](https://www.markspaneth.com/assets/images/blog/_list_image/02_02_18_508408464_AAB_560x292.jpg)
 
 ### Load to mobile application
+
+![coming soon](https://www.markspaneth.com/assets/images/blog/_list_image/02_02_18_508408464_AAB_560x292.jpg)
