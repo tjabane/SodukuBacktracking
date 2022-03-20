@@ -34,7 +34,7 @@ namespace SodukuBacktracking.Model
 
         public Position ToPosition()
         {
-            return new Position(Row, Colomn);
+            return Position.GetPosition(Row, Colomn);
         }
 
         public int Row { get; }

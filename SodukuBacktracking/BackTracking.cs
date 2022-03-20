@@ -22,7 +22,7 @@ namespace SodukuBacktracking
 
         private static int[,] GetLoopMethodSolution(int[,] grid, List<Node> nodes)
         {
-            var position = new Position();
+            var position = Position.GetPosition(0,0);
             for (int i = 0; i < MaximumIterations; i++)
             {
                 var row = position.Row;
