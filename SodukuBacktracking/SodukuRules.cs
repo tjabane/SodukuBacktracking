@@ -62,12 +62,15 @@ namespace SodukuBacktracking
             return HasDuplicates(nonZero);
         }
 
+        private static bool HasDuplicates(IEnumerable<int> numbers) 
+        {
+            return numbers.Distinct().Count() == numbers.Count();
+        }
+
         private static bool HasZeros(int[,] grid,int row)
         {
             return grid.GetRow(row).Any(num => num == 0);
         }
-
-        private static bool HasDuplicates(IEnumerable<int> numbers) => numbers.Distinct().Count() == numbers.Count();
 
         private static int[] GetSubGrid(int[,] grid, int row, int colomn)
         {
