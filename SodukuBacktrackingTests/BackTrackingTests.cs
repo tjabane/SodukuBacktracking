@@ -16,9 +16,8 @@ namespace SodukuBacktrackingTests
         public void ShouldSolveSodukuWhenGridSolvable()
         {
             var problem = GetSolvableSoduku();
-            var backTracking = new BackTracking();
 
-            var results = backTracking.Solve(problem);
+            var results = BackTracking.Solve(problem);
             var isSolved = SodukuRules.IsSodukuSolved(results);
 
             isSolved.ShouldBeTrue();
@@ -30,7 +29,7 @@ namespace SodukuBacktrackingTests
             var problem = GetUnSolvableSoduku();
             var backTracking = new BackTracking();
 
-            var exception = Assert.Throws<UnSolvableException>(() => backTracking.Solve(problem));
+            var exception = Assert.Throws<UnSolvableException>(() => BackTracking.Solve(problem));
             exception.Message.ShouldBe("Maximun iterations exceeded");
         }
 
@@ -40,7 +39,7 @@ namespace SodukuBacktrackingTests
             var soduku = GetInvalidSoduku();
             var backTracking = new BackTracking();
 
-            var exception = Assert.Throws<InvalidGridException>(() => backTracking.Solve(soduku));
+            var exception = Assert.Throws<InvalidGridException>(() => BackTracking.Solve(soduku));
             exception.Message.ShouldBe("Soduku contains repeating numbers");
         }
 
